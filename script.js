@@ -1,41 +1,22 @@
-// Contact Form Validation
-document.getElementById('contactForm').addEventListener('submit', function (e) {
-  e.preventDefault();
-  const name = document.getElementById("name").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const message = document.getElementById("message").value.trim();
-  const formMessage = document.getElementById("formMessage");
+// Get cart from localStorage or initialize empty array
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  if (!name || !email || !message) {
-    formMessage.textContent = "All fields are required.";
-    formMessage.style.color = "red";
-  } else if (!emailPattern.test(email)) {
-    formMessage.textContent = "Invalid email format.";
-    formMessage.style.color = "red";
-  } else {
-    formMessage.textContent = "Message sent successfully!";
-    formMessage.style.color = "green";
-    this.reset();
-  }
-});
-
-// To-Do List Logic
-function addTodo() {
-  const input = document.getElementById("todoInput");
-  const value = input.value.trim();
-  if (!value) return;
-
-  const li = document.createElement("li");
-  li.textContent = value;
-
-  const delBtn = document.createElement("button");
-  delBtn.textContent = "X";
-  delBtn.onclick = () => li.remove();
-
-  li.appendChild(delBtn);
-  document.getElementById("todoList").appendChild(li);
-  input.value = "";
+// Function to update cart count in navbar
+function updateCartCount() {
+  const countElement = document.getElementById('cart-count');
+  countElement.textContent = cart.length;
 }
 
+// Function to add item to cart
+function addToCart(product) {
+  cart.push(product);
+  localStorage.setItem('cart', JSON.stringify(cart));
+  updateCartCount();
+  alert(`${product.name} added to cart!`);
+}
+
+// Sample product object usage
+// addToCart({ id: 1, name: "Nike Sneakers", price: 50 });
+
+// Call this once page loads to initialize count
+document.addEventListener('DOMContentLoaded', updateCartCount);
